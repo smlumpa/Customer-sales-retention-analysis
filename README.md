@@ -157,7 +157,6 @@ https://github.com/smlumpa/customer-sales-retention-analysis
   </a>
 </p>
 
-Do NOT us
 
 ## Author
 
