@@ -141,8 +141,23 @@ customer-sales-retention-analysis/
 
 ## Links
 
-- GitHub Repository: https://github.com/smlumpa/customer-sales-retention-analysis
-- Power BI Dashboard: <iframe title="Customer Analysis" width="600" height="373.5" src="https://app.powerbi.com/view?r=eyJrIjoiYzZjZjExYjAtYzRlYS00NTFhLWFlYmMtYzQwN2QyNTU4NDNjIiwidCI6IjQ1Mzc4OWE0LWM3YjEtNGMzYy04MWUxLWNiNGZmZWZhNDRjMCJ9" frameborder="0" allowFullScreen="true"></iframe>
+🔗 **GitHub Repository**  
+https://github.com/smlumpa/customer-sales-retention-analysis
+
+📊 **Live Power BI Dashboard**  
+[View Interactive Dashboard](https://app.powerbi.com/view?r=eyJrIjoiYzZjZjExYjAtYzRlYS00NTFhLWFlYmMtYzQwN2QyNTU4NDNjIiwidCI6IjQ1Mzc4OWE0LWM3YjEtNGMzYy04MWUxLWNiNGZmZWZhNDRjMCJ9)
+
+---
+
+## Interactive Dashboard Preview
+
+<p align="center">
+  <a href="https://app.powerbi.com/view?r=eyJrIjoiYzZjZjExYjAtYzRlYS00NTFhLWFlYmMtYzQwN2QyNTU4NDNjIiwidCI6IjQ1Mzc4OWE0LWM3YjEtNGMzYy04MWUxLWNiNGZmZWZhNDRjMCJ9">
+    <img src="images/laptop_mockup.png" width="700">
+  </a>
+</p>
+
+Do NOT us
 
 ## Author
 
