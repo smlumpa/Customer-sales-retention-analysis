@@ -1,6 +1,12 @@
 # Customer Sales & Retention Analysis
+### SQL | BigQuery | Power BI | Customer Analytics
 
-End-to-end customer analytics project using **SQL**, **Google BigQuery**, and **Power BI** to analyse sales performance, customer behaviour, retention trends, churn, and customer lifetime value.
+![SQL](https://img.shields.io/badge/SQL-BigQuery-blue)
+![Power BI](https://img.shields.io/badge/PowerBI-Dashboard-yellow)
+![DAX](https://img.shields.io/badge/DAX-Measures-orange)
+![Analytics](https://img.shields.io/badge/Analytics-Customer%20Insights-teal)
+
+End-to-end customer analytics project using SQL, Google BigQuery, and Power BI to analyse customer behaviour, retention trends, churn patterns, and revenue performance through an interactive business intelligence dashboard.
 
 ## Dashboard Preview
 
@@ -18,6 +24,16 @@ The dashboard helps answer key business questions:
 - How many customers are repeat customers?
 - How do retention and churn trends change by month?
 - Which customers and segments should the business prioritise?
+
+## Business Problem
+
+Businesses often struggle to understand:
+- which customer segments generate the most revenue,
+- how retention changes over time,
+- which customers are at risk of churn,
+- and how customer lifetime value differs across segments.
+
+This project demonstrates how SQL transformations and Power BI visualisations can be used to generate actionable customer insights.
 
 ## Tools Used
 
@@ -73,6 +89,13 @@ SELECT
 FROM `imperial-welder-491806-c8.customer_analytics.orders`
 GROUP BY customer_id;
 ```
+## Key Insights
+
+- High Value customers generated the highest overall revenue.
+- Repeat customers represented a significant share of sales.
+- Customer lifetime value varied considerably across segments.
+- Retention improved across later months while churn reduced.
+- Moderate and Standard customers represented the largest customer groups.
 
 ## Dashboard Metrics
 
@@ -115,6 +138,11 @@ customer-sales-retention-analysis/
 3. Connect Power BI to the BigQuery views.
 4. Recreate or review the dashboard visuals.
 5. Use the DAX measures in `docs/dax_measures.md`.
+
+## Links
+
+- GitHub Repository: https://github.com/smlumpa/customer-sales-retention-analysis
+- Power BI Dashboard: 
 
 ## Author
 
