@@ -142,7 +142,7 @@ customer-sales-retention-analysis/
 ## Links
 
 - GitHub Repository: https://github.com/smlumpa/customer-sales-retention-analysis
-- Power BI Dashboard: 
+- Power BI Dashboard: <iframe title="Customer Analysis" width="600" height="373.5" src="https://app.powerbi.com/view?r=eyJrIjoiYzZjZjExYjAtYzRlYS00NTFhLWFlYmMtYzQwN2QyNTU4NDNjIiwidCI6IjQ1Mzc4OWE0LWM3YjEtNGMzYy04MWUxLWNiNGZmZWZhNDRjMCJ9" frameborder="0" allowFullScreen="true"></iframe>
 
 ## Author
 
