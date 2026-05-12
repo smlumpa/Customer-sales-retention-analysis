@@ -6,15 +6,20 @@
 ![DAX](https://img.shields.io/badge/DAX-Measures-orange)
 ![Analytics](https://img.shields.io/badge/Analytics-Customer%20Insights-teal)
 
+
 ## Interactive Dashboard Preview
 
 End-to-end customer analytics project using SQL, Google BigQuery, and Power BI to analyse customer behaviour, retention trends, churn patterns, and revenue performance through an interactive business intelligence dashboard.
+
+
 
 <p align="center">
   <a href="https://app.powerbi.com/view?r=eyJrIjoiYzZjZjExYjAtYzRlYS00NTFhLWFlYmMtYzQwN2QyNTU4NDNjIiwidCI6IjQ1Mzc4OWE0LWM3YjEtNGMzYy04MWUxLWNiNGZmZWZhNDRjMCJ9">
     <img src="images/laptop_mockup.png" width="400">
   </a>
 </p>
+
+
 
 ## Dashboard Preview
 
