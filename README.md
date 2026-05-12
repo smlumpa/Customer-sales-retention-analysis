@@ -6,6 +6,11 @@
 ![DAX](https://img.shields.io/badge/DAX-Measures-orange)
 ![Analytics](https://img.shields.io/badge/Analytics-Customer%20Insights-teal)
 
+![Power BI](https://img.shields.io/badge/Power%20BI-F2C811?style=for-the-badge&logo=powerbi&logoColor=black)
+
+![DAX](https://img.shields.io/badge/DAX-203864?style=for-the-badge)
+
+![HR Analytics](https://img.shields.io/badge/HR%20Analytics-0E7490?style=for-the-badge)
 ---
 
 ## Interactive Dashboard Preview
