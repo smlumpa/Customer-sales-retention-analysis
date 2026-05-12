@@ -11,8 +11,6 @@ Interactive Learning & Development analytics dashboard built with Power BI and D
 
 <br>
 
-<br>
-
 ## Interactive Dashboard Preview
 
 <p align="center">
