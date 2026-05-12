@@ -21,6 +21,7 @@ Interactive Learning & Development analytics dashboard built with Power BI and D
 
 End-to-end customer analytics project using SQL, Google BigQuery, and Power BI to analyse customer behaviour, retention trends, churn patterns, and revenue performance through an interactive business intelligence dashboard.
 
+[View Interactive Dashboard](https://app.powerbi.com/view?r=eyJrIjoiYzZjZjExYjAtYzRlYS00NTFhLWFlYmMtYzQwN2QyNTU4NDNjIiwidCI6IjQ1Mzc4OWE0LWM3YjEtNGMzYy04MWUxLWNiNGZmZWZhNDRjMCJ9)
 ---
 
 ## Dashboard Preview
