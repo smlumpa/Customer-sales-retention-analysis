@@ -7,6 +7,7 @@
 ![Analytics](https://img.shields.io/badge/Analytics-Customer%20Insights-teal)
 
 Interactive Learning & Development analytics dashboard built with Power BI and DAX to analyse workforce training performance, engagement, and completion trends.
+
 ---
 
 ## Interactive Dashboard Preview
