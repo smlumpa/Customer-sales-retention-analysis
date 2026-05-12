@@ -10,7 +10,7 @@
 Interactive Learning & Development analytics dashboard built with Power BI and DAX to analyse workforce training performance, engagement, and completion trends.
 
 <br>
----
+
 <br>
 
 ## Interactive Dashboard Preview
