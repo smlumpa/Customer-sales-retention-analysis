@@ -430,7 +430,7 @@ FORMAT ( MinDate, "dd MMM yyyy" )
     & FORMAT ( MaxDate, "dd MMM yyyy" )
 
 Sales KPI Label =
-FORMAT ( [Total Sales], "$#,##0" )
+FORMAT ( [Total Sales], "£#,##0" )
 
 Churn Rate Label =
 FORMAT ( [Churn Rate], "0.0%" )
