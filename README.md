@@ -2,73 +2,116 @@
 
 **SQL · BigQuery · Power BI · DAX · Customer Analytics**
 
-An end-to-end portfolio project that models synthetic customer, order and
-product data in BigQuery and analyses sales, customer status, repeat purchasing
-and commercial performance in Power BI.
+An end-to-end portfolio project that analyses synthetic customer purchasing
+behaviour, revenue performance, repeat purchasing, cohorts and retention. SQL
+and BigQuery support the analytical pipeline, with the results presented in an
+interactive Power BI dashboard.
 
 > **Data declaration:** All records are synthetic sample data. Names are
 > fictitious and no confidential client or employer information is included.
 
+## Dashboard headline metrics
+
+These figures match the published Power BI dashboard and were verified against
+the original Power BI model exported in VPAX format:
+
+| Dashboard KPI | Result | Definition |
+|---|---:|---|
+| Total Revenue | £104,317.21 | Sum of all recorded order values |
+| Average Order Value | £412.32 | Total revenue divided by 253 distinct orders |
+| Average Monthly Retention Rate | 78.03% | Average of the monthly retention-rate measure |
+| Repeat Customers | 57 | Customers purchasing in a month after their cohort month |
+
+The dashboard presents the first two values as **£104.32K** and **£412.32**, and
+the retention measure as **78.0%**.
+
 ## Business questions
 
-- Which customer segments and product categories generate the most sales?
-- What proportion of customers are active, at risk or churned?
-- How many purchasing customers return for another completed order?
-- Which acquisition channels generate the most completed-order sales?
-- How do completed sales and orders change over time?
+- Which customer segments generate the most value?
+- How does revenue and order activity change over time?
+- Which customers make purchases after their initial cohort month?
+- How does retention vary across monthly cohorts?
+- Which products, categories and acquisition channels perform most strongly?
+- Where are potential churn or engagement risks visible?
 
-## Verified headline findings
+## Dashboard measures
 
-The figures below were reproduced from the repaired source files and count only
-orders whose status is `Completed`:
+The headline measures are calculated from the `customer_transactions` view:
 
-| Metric | Result |
+```DAX
+Total Revenue =
+SUM(customer_transactions[order_value])
+```
+
+```DAX
+Avg Order Value =
+DIVIDE(
+    SUM(customer_transactions[order_value]),
+    DISTINCTCOUNT(customer_transactions[order_id])
+)
+```
+
+```DAX
+Repeat Customers =
+CALCULATE(
+    DISTINCTCOUNT(customer_transactions[customer_id]),
+    FILTER(
+        customer_transactions,
+        customer_transactions[Months Since Cohort] > 0
+    )
+)
+```
+
+```DAX
+Average Retention Rate =
+AVERAGEX(
+    VALUES(customer_transactions[Month Name]),
+    [Retention Rate]
+)
+```
+
+See [the verified DAX measures](powerbi/dax_measures.txt) for the complete
+portfolio measure set.
+
+## Completed-order secondary analysis
+
+The repository also includes a separate realised-sales convention that counts
+only orders whose status is `Completed`. This produces:
+
+| Secondary metric | Result |
 |---|---:|
 | Completed-order sales | £82,397.95 |
 | Completed orders | 189 |
 | Average completed-order value | £435.97 |
-| Purchasing customers | 60 |
-| Repeat customers | 48 (80%) |
-| Churned customers | 39 (65%) |
-| At-risk customers | 7 (11.7%) |
-| Active customers | 14 (23.3%) |
+| Customers with more than one completed order | 48 (80% of purchasing customers) |
 
-High Value customers generated £26,976.66, or 32.7% of completed-order sales.
-Electronics produced £42,165.08, or 51.2% of completed-order sales. Social Media
-was the highest-sales acquisition channel at £15,917.23. Laptop Pro 14 was the
-highest-sales product at £26,372.78.
+These figures answer a different question from the dashboard headline cards.
+They are retained as a transparent secondary analysis rather than being
+presented as replacements for the published dashboard figures.
 
-These are descriptive findings from synthetic data and should not be treated as
-recommendations about a real organisation.
-
-## Data quality repair
+## Data-quality repair
 
 The raw sample contained 89 orders occurring before the associated signup date,
 affecting 44 customers. The repair script moves only inconsistent signup dates
 back to the customer's earliest recorded activity. It does not alter orders,
 values, quantities, statuses or identifiers.
 
-Both the unchanged source files and repaired analytical files are included:
-
-- `data/raw/` — original selected source files
-- `data/processed/` — chronologically consistent files used for analysis
+- `data/raw/` — unchanged selected source files
+- `data/processed/` — chronologically consistent analytical files
 - `python/repair_data.py` — reproducible repair and integrity checks
-- `docs/validation_report.md` — repair rationale and check results
+- `docs/validation_report.md` — definitions, reconciliation and check results
 
 ## Analytical model
 
 ```text
 Customers (1) ─── (*) Orders (*) ─── (1) Products
                          |
-                         *
-                         |
-                      (1) Date
+                         └── Customer transaction and cohort views
 ```
 
-Realised-sales measures include completed orders only. Cancelled and returned
-orders remain available for operational analysis. The source `churn_flag`
-contains three states—Active, At Risk and Churned—and the DAX measures preserve
-that distinction.
+The original Power BI model uses BigQuery tables and views including
+`customer_transactions`, `customer_metrics`, `customer_cohorts` and
+`customer_retention`.
 
 ## Repository structure
 
@@ -96,20 +139,20 @@ that distinction.
 ## Reproduce the project
 
 1. Install Python dependencies with `pip install -r requirements.txt`.
-2. Run `python python/repair_data.py` and confirm every post-repair integrity
-   check is zero.
-3. Upload the three files in `data/processed/` to BigQuery.
+2. Run `python python/repair_data.py` and confirm the integrity checks are zero.
+3. Upload the three processed CSV files to BigQuery.
 4. Replace `YOUR_PROJECT` in the SQL files with your Google Cloud project ID.
 5. Run the SQL scripts in numerical order.
-6. Connect Power BI to the resulting tables or views and create the documented
-   relationships.
-7. Add the measures from `powerbi/dax_measures.txt`.
+6. Connect Power BI to the resulting tables and views.
+7. Create the documented relationships and add the verified DAX measures.
 
-## Power BI note
+## Modelling note
 
-The included PBIX is a thin report connected to a Power BI Service semantic
-model. The processed CSV files, SQL and DAX are the reproducible project assets;
-opening the PBIX may require access to the associated online semantic model.
+The dashboard's average retention measure groups activity using
+`Month Name`. Because the dataset spans 2023–2024, same-named months across
+years can be combined. The published 78.03% result is reproducible from the
+original model, but a future version could use a Year-Month field for more
+precise chronological analysis.
 
 ## Author
 
