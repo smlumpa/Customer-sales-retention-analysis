@@ -1,0 +1,13 @@
+product_id,product_name,product_category,unit_price
+P001,Laptop Pro 14,Electronics,1200
+P002,Wireless Headphones,Electronics,180
+P003,4K Monitor,Electronics,420
+P004,Office Chair,Furniture,320
+P005,Standing Desk,Furniture,650
+P006,Keyboard & Mouse Set,Accessories,95
+P007,Tablet 11,Electronics,540
+P008,Docking Station,Accessories,140
+P009,Ergonomic Desk Lamp,Accessories,75
+P010,Conference Webcam,Accessories,160
+P011,Portable SSD,Accessories,190
+P012,Business Backpack,Accessories,110
