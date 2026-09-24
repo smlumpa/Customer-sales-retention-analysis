@@ -1,0 +1,61 @@
+customer_id,customer_name,customer_segment,signup_date,country,acquisition_channel,last_active_date,churn_flag
+C001,Michael Turner,High Value,2023-07-28,Canada,Organic Search,2024-12-05,Active
+C002,David Hall,Low Value,2023-10-02,Germany,Email,2023-04-24,Churned
+C003,Aisha Taylor,Moderate,2023-03-11,Canada,Social Media,2024-02-27,Churned
+C004,Ethan Taylor,Moderate,2023-01-01,Australia,Organic Search,2024-05-23,Churned
+C005,Nina Lee,Low Value,2023-01-04,Canada,Direct,2023-04-11,Churned
+C006,David Lee,Standard,2023-12-08,USA,Paid Search,2024-03-17,Churned
+C007,Sarah Roberts,At Risk,2023-08-09,Germany,Referral,2024-04-14,Churned
+C008,David Turner,Moderate,2023-06-06,Canada,Social Media,2024-05-07,Churned
+C009,Noah Baker,At Risk,2023-11-24,Germany,Social Media,2024-04-14,Churned
+C010,Grace Smith,At Risk,2023-07-23,Ireland,Direct,2024-03-09,Churned
+C011,Harper Scott,Standard,2023-11-23,Ireland,Direct,2024-11-12,Active
+C012,Ryan Wright,Standard,2023-12-09,Australia,Email,2024-12-19,Active
+C013,Aaron Hughes,Standard,2023-04-03,Netherlands,Organic Search,2024-12-23,Active
+C014,Jacob Thomas,Low Value,2023-03-29,Canada,Email,2024-04-21,Churned
+C015,Emma Ward,Standard,2023-08-22,Australia,Social Media,2024-11-10,Active
+C016,Sarah Wilson,At Risk,2023-10-28,UK,Direct,2024-02-18,Churned
+C017,Zara Evans,Moderate,2023-07-27,Germany,Social Media,2024-04-26,Churned
+C018,Aisha Hughes,At Risk,2023-05-28,Australia,Direct,2024-02-25,Churned
+C019,Ella King,At Risk,2023-04-01,USA,Social Media,2023-12-27,Churned
+C020,Aaron Young,Standard,2023-01-23,UK,Paid Search,2024-02-29,Churned
+C021,Sarah Thomas,Standard,2024-02-14,Canada,Direct,2024-05-08,Churned
+C022,Jack Hughes,Moderate,2023-08-04,UK,Organic Search,2024-09-13,At Risk
+C023,Layla Lewis,Standard,2023-12-29,UK,Organic Search,2023-11-30,Churned
+C024,John Scott,Standard,2023-07-13,UK,Social Media,2024-08-18,Churned
+C025,Alex Smith,At Risk,2023-06-15,Canada,Referral,2023-09-29,Churned
+C026,Aria Walker,High Value,2023-08-01,Canada,Organic Search,2024-10-15,At Risk
+C027,Sophia Allen,Standard,2023-02-02,Netherlands,Direct,2024-08-09,Churned
+C028,Jacob Evans,High Value,2024-01-16,UK,Direct,2024-11-16,Active
+C029,Mason Hall,High Value,2023-10-03,Canada,Paid Search,2024-12-06,Active
+C030,Freya Roberts,Low Value,2024-02-02,Ireland,Referral,2024-11-02,Active
+C031,Ella Walker,Moderate,2023-09-22,UK,Direct,2024-12-19,Active
+C032,Adam Hall,Moderate,2023-08-10,UK,Direct,2024-11-15,Active
+C033,Jacob Smith,High Value,2023-06-28,Australia,Direct,2024-10-24,At Risk
+C034,Nathan Morgan,At Risk,2023-08-19,Canada,Referral,2024-01-31,Churned
+C035,Sarah Taylor,At Risk,2023-09-25,Canada,Social Media,2024-01-08,Churned
+C036,Olivia Walker,Standard,2023-09-14,UK,Social Media,2024-05-28,Churned
+C037,Charlotte Green,At Risk,2023-06-24,UK,Email,2023-08-21,Churned
+C038,Ethan Wilson,Low Value,2023-06-14,Canada,Referral,2023-10-08,Churned
+C039,Layla Lee,High Value,2023-04-11,Germany,Paid Search,2024-11-17,Active
+C040,Sarah Wilson,At Risk,2023-05-18,Germany,Paid Search,2024-03-13,Churned
+C041,Grace Lee,High Value,2023-06-24,Germany,Social Media,2024-07-19,Churned
+C042,Ella Brown,High Value,2024-02-07,Australia,Referral,2024-09-16,At Risk
+C043,Freya Smith,At Risk,2023-05-12,Netherlands,Social Media,2023-12-13,Churned
+C044,Leo Hall,Low Value,2023-04-25,Ireland,Social Media,2024-01-07,Churned
+C045,Sam Hughes,Low Value,2023-01-04,Ireland,Social Media,2024-09-13,At Risk
+C046,Ryan Walker,Standard,2023-12-23,Germany,Organic Search,2024-07-02,Churned
+C047,Oscar Young,At Risk,2023-07-05,Netherlands,Referral,2023-09-23,Churned
+C048,Noah Turner,Moderate,2023-08-18,Canada,Paid Search,2024-09-04,At Risk
+C049,Liam Hall,Low Value,2024-02-17,UK,Referral,2023-10-21,Churned
+C050,Amelia Taylor,Moderate,2023-10-14,Australia,Email,2024-12-24,Active
+C051,Isla Khan,High Value,2023-05-16,Germany,Social Media,2024-06-13,Churned
+C052,Nina Jones,Moderate,2023-10-28,Australia,Email,2024-06-19,Churned
+C053,Ruby Turner,High Value,2023-12-28,Canada,Paid Search,2024-07-03,Churned
+C054,Lucas Young,Standard,2023-10-16,Germany,Email,2024-06-27,Churned
+C055,Mila Young,Moderate,2023-09-14,Germany,Email,2024-11-30,Active
+C056,Aisha Taylor,Moderate,2023-03-05,UK,Referral,2024-12-07,Active
+C057,Luca Brown,Standard,2023-09-02,Germany,Organic Search,2024-09-29,At Risk
+C058,Ella Brown,Standard,2023-06-16,Ireland,Email,2024-05-01,Churned
+C059,Charlotte Baker,Low Value,2023-01-17,Australia,Social Media,2024-08-20,Churned
+C060,Eva Turner,Low Value,2023-05-28,Netherlands,Social Media,2023-11-22,Churned

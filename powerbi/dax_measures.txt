@@ -1,0 +1,459 @@
+/*
+CUSTOMER SALES & RETENTION ANALYSIS — POWER BI DAX LAYER
+Reconstructed measure library for the Customers / Orders / Products model.
+
+Assumed tables/columns
+Customers:
+ customer_id, customer_name, customer_segment, signup_date, country,
+ acquisition_channel, last_active_date, churn_flag
+
+Orders:
+ order_id, customer_id, product_id, order_date, quantity, order_value,
+ order_status, discount_amount, payment_method
+
+Products:
+ product_id, product_name, product_category, unit_price
+
+Recommended relationships
+Customers[customer_id] 1:* Orders[customer_id]
+Products[product_id]   1:* Orders[product_id]
+Date[Date]             1:* Orders[order_date]
+
+IMPORTANT:
+These are reconstructed measures designed to be consistent with the surviving
+project datasets and reconstructed BigQuery layer. They are not represented as
+byte-for-byte copies of the original measures from the earlier chat.
+*/
+
+
+// ================================================================
+// 01 — DATE TABLE
+// Create as a calculated table, then mark it as the model's Date table.
+// ================================================================
+
+Date =
+ADDCOLUMNS (
+    CALENDAR ( MIN ( Orders[order_date] ), MAX ( Orders[order_date] ) ),
+    "Year", YEAR ( [Date] ),
+    "Month Number", MONTH ( [Date] ),
+    "Month", FORMAT ( [Date], "MMM" ),
+    "Month Name", FORMAT ( [Date], "MMMM" ),
+    "Year Month", FORMAT ( [Date], "YYYY-MM" ),
+    "Year Month Sort", YEAR ( [Date] ) * 100 + MONTH ( [Date] ),
+    "Quarter", "Q" & FORMAT ( [Date], "Q" )
+)
+
+
+// ================================================================
+// 02 — CORE SALES KPIs
+// Realised sales use Completed orders, matching the BigQuery layer.
+// ================================================================
+
+Total Sales =
+CALCULATE (
+    SUM ( Orders[order_value] ),
+    Orders[order_status] = "Completed"
+)
+
+Total Orders =
+CALCULATE (
+    DISTINCTCOUNT ( Orders[order_id] ),
+    Orders[order_status] = "Completed"
+)
+
+Total Customers =
+DISTINCTCOUNT ( Customers[customer_id] )
+
+Purchasing Customers =
+CALCULATE (
+    DISTINCTCOUNT ( Orders[customer_id] ),
+    Orders[order_status] = "Completed"
+)
+
+Units Sold =
+CALCULATE (
+    SUM ( Orders[quantity] ),
+    Orders[order_status] = "Completed"
+)
+
+Average Order Value =
+DIVIDE ( [Total Sales], [Total Orders], 0 )
+
+Revenue per Customer =
+DIVIDE ( [Total Sales], [Purchasing Customers], 0 )
+
+Total Discounts =
+CALCULATE (
+    SUM ( Orders[discount_amount] ),
+    Orders[order_status] = "Completed"
+)
+
+Average Discount per Order =
+DIVIDE ( [Total Discounts], [Total Orders], 0 )
+
+Cancelled Orders =
+CALCULATE (
+    DISTINCTCOUNT ( Orders[order_id] ),
+    Orders[order_status] = "Cancelled"
+)
+
+Returned Orders =
+CALCULATE (
+    DISTINCTCOUNT ( Orders[order_id] ),
+    Orders[order_status] = "Returned"
+)
+
+Completed Order Rate =
+DIVIDE (
+    [Total Orders],
+    DISTINCTCOUNT ( Orders[order_id] ),
+    0
+)
+
+
+// ================================================================
+// 03 — CUSTOMER STATUS / CHURN / RETENTION
+// churn_flag is the source-of-truth status in the surviving customer data.
+// ================================================================
+
+Churned Customers =
+CALCULATE (
+    DISTINCTCOUNT ( Customers[customer_id] ),
+    Customers[churn_flag] = "Churned"
+)
+
+Active Customers =
+CALCULATE (
+    DISTINCTCOUNT ( Customers[customer_id] ),
+    Customers[churn_flag] = "Active"
+)
+
+At Risk Customers =
+CALCULATE (
+    DISTINCTCOUNT ( Customers[customer_id] ),
+    Customers[churn_flag] = "At Risk"
+)
+
+Retained Customers =
+[Active Customers] + [At Risk Customers]
+
+Churn Rate =
+DIVIDE ( [Churned Customers], [Total Customers], 0 )
+
+Retention Rate =
+DIVIDE ( [Retained Customers], [Total Customers], 0 )
+
+Active Customer % =
+DIVIDE ( [Active Customers], [Total Customers], 0 )
+
+At Risk Customer % =
+DIVIDE ( [At Risk Customers], [Total Customers], 0 )
+
+Churned Customer % =
+[Churn Rate]
+
+
+// ================================================================
+// 04 — REPEAT PURCHASE / CUSTOMER LOYALTY
+// ================================================================
+
+Repeat Customers =
+COUNTROWS (
+    FILTER (
+        VALUES ( Customers[customer_id] ),
+        CALCULATE (
+            DISTINCTCOUNT ( Orders[order_id] ),
+            Orders[order_status] = "Completed"
+        ) > 1
+    )
+)
+
+One-Time Customers =
+COUNTROWS (
+    FILTER (
+        VALUES ( Customers[customer_id] ),
+        CALCULATE (
+            DISTINCTCOUNT ( Orders[order_id] ),
+            Orders[order_status] = "Completed"
+        ) = 1
+    )
+)
+
+Repeat Customer Rate =
+DIVIDE ( [Repeat Customers], [Purchasing Customers], 0 )
+
+One-Time Customer Rate =
+DIVIDE ( [One-Time Customers], [Purchasing Customers], 0 )
+
+
+// ================================================================
+// 05 — NEW / RETURNING CUSTOMERS IN DATE CONTEXT
+// ================================================================
+
+New Customers =
+VAR PeriodStart = MIN ( 'Date'[Date] )
+VAR PeriodEnd   = MAX ( 'Date'[Date] )
+RETURN
+COUNTROWS (
+    FILTER (
+        VALUES ( Customers[customer_id] ),
+        VAR FirstPurchase =
+            CALCULATE (
+                MIN ( Orders[order_date] ),
+                REMOVEFILTERS ( 'Date' ),
+                Orders[order_status] = "Completed"
+            )
+        RETURN
+            NOT ISBLANK ( FirstPurchase )
+                && FirstPurchase >= PeriodStart
+                && FirstPurchase <= PeriodEnd
+    )
+)
+
+Returning Customers =
+VAR PeriodCustomers =
+    CALCULATETABLE (
+        VALUES ( Orders[customer_id] ),
+        Orders[order_status] = "Completed"
+    )
+VAR PeriodStart = MIN ( 'Date'[Date] )
+RETURN
+COUNTROWS (
+    FILTER (
+        PeriodCustomers,
+        VAR FirstPurchase =
+            CALCULATE (
+                MIN ( Orders[order_date] ),
+                REMOVEFILTERS ( 'Date' ),
+                Orders[order_status] = "Completed"
+            )
+        RETURN FirstPurchase < PeriodStart
+    )
+)
+
+New Customer Rate =
+DIVIDE ( [New Customers], [Purchasing Customers], 0 )
+
+Returning Customer Rate =
+DIVIDE ( [Returning Customers], [Purchasing Customers], 0 )
+
+
+// ================================================================
+// 06 — CUSTOMER VALUE
+// ================================================================
+
+Customer Lifetime Value =
+AVERAGEX (
+    VALUES ( Customers[customer_id] ),
+    CALCULATE (
+        SUM ( Orders[order_value] ),
+        Orders[order_status] = "Completed"
+    )
+)
+
+Average Orders per Customer =
+DIVIDE ( [Total Orders], [Purchasing Customers], 0 )
+
+Average Units per Customer =
+DIVIDE ( [Units Sold], [Purchasing Customers], 0 )
+
+
+// Useful in a customer-level table visual.
+Customer Sales =
+CALCULATE (
+    SUM ( Orders[order_value] ),
+    Orders[order_status] = "Completed"
+)
+
+Customer Orders =
+CALCULATE (
+    DISTINCTCOUNT ( Orders[order_id] ),
+    Orders[order_status] = "Completed"
+)
+
+First Purchase Date =
+CALCULATE (
+    MIN ( Orders[order_date] ),
+    REMOVEFILTERS ( 'Date' ),
+    Orders[order_status] = "Completed"
+)
+
+Last Purchase Date =
+CALCULATE (
+    MAX ( Orders[order_date] ),
+    REMOVEFILTERS ( 'Date' ),
+    Orders[order_status] = "Completed"
+)
+
+Days Since Last Purchase =
+VAR LastPurchase = [Last Purchase Date]
+VAR ModelEndDate =
+    CALCULATE ( MAX ( Orders[order_date] ), ALL ( Orders ) )
+RETURN
+IF (
+    NOT ISBLANK ( LastPurchase ),
+    DATEDIFF ( LastPurchase, ModelEndDate, DAY )
+)
+
+
+// ================================================================
+// 07 — TIME INTELLIGENCE
+// ================================================================
+
+Sales Previous Month =
+CALCULATE (
+    [Total Sales],
+    DATEADD ( 'Date'[Date], -1, MONTH )
+)
+
+Sales MoM Change =
+[Total Sales] - [Sales Previous Month]
+
+Sales MoM % =
+DIVIDE (
+    [Total Sales] - [Sales Previous Month],
+    [Sales Previous Month],
+    0
+)
+
+Sales Previous Year =
+CALCULATE (
+    [Total Sales],
+    SAMEPERIODLASTYEAR ( 'Date'[Date] )
+)
+
+Sales YoY Change =
+[Total Sales] - [Sales Previous Year]
+
+Sales YoY % =
+DIVIDE (
+    [Total Sales] - [Sales Previous Year],
+    [Sales Previous Year],
+    0
+)
+
+Orders Previous Year =
+CALCULATE (
+    [Total Orders],
+    SAMEPERIODLASTYEAR ( 'Date'[Date] )
+)
+
+Orders YoY % =
+DIVIDE (
+    [Total Orders] - [Orders Previous Year],
+    [Orders Previous Year],
+    0
+)
+
+Customers Previous Year =
+CALCULATE (
+    [Purchasing Customers],
+    SAMEPERIODLASTYEAR ( 'Date'[Date] )
+)
+
+Customers YoY % =
+DIVIDE (
+    [Purchasing Customers] - [Customers Previous Year],
+    [Customers Previous Year],
+    0
+)
+
+Sales YTD =
+TOTALYTD ( [Total Sales], 'Date'[Date] )
+
+Orders YTD =
+TOTALYTD ( [Total Orders], 'Date'[Date] )
+
+
+// ================================================================
+// 08 — PRODUCT PERFORMANCE
+// Put Product Category / Product Name on visual axes and use these measures.
+// ================================================================
+
+Product Sales =
+[Total Sales]
+
+Product Units Sold =
+[Units Sold]
+
+Product Orders =
+[Total Orders]
+
+Product Sales % =
+DIVIDE (
+    [Total Sales],
+    CALCULATE ( [Total Sales], ALL ( Products ) ),
+    0
+)
+
+
+// ================================================================
+// 09 — CUSTOMER SEGMENT / COUNTRY / ACQUISITION CHANNEL
+// These measures respond to the relevant Customers dimension filters.
+// ================================================================
+
+Segment Sales =
+[Total Sales]
+
+Segment Customers =
+[Purchasing Customers]
+
+Segment Average Order Value =
+[Average Order Value]
+
+Channel Sales =
+[Total Sales]
+
+Channel Customers =
+[Purchasing Customers]
+
+Channel Revenue per Customer =
+[Revenue per Customer]
+
+Country Sales =
+[Total Sales]
+
+Country Customers =
+[Purchasing Customers]
+
+
+// ================================================================
+// 10 — DASHBOARD DISPLAY / SUPPORTING MEASURES
+// ================================================================
+
+Selected Period =
+VAR MinDate = MIN ( 'Date'[Date] )
+VAR MaxDate = MAX ( 'Date'[Date] )
+RETURN
+FORMAT ( MinDate, "dd MMM yyyy" )
+    & " - "
+    & FORMAT ( MaxDate, "dd MMM yyyy" )
+
+Sales KPI Label =
+FORMAT ( [Total Sales], "$#,##0" )
+
+Churn Rate Label =
+FORMAT ( [Churn Rate], "0.0%" )
+
+Retention Rate Label =
+FORMAT ( [Retention Rate], "0.0%" )
+
+
+// ================================================================
+// OPTIONAL CALCULATED COLUMNS
+// Only create these if useful for row-level customer analysis.
+// ================================================================
+
+/*
+Customers[Customer Status] =
+Customers[churn_flag]
+
+Orders[Order Year] =
+YEAR ( Orders[order_date] )
+
+Orders[Order Month] =
+FORMAT ( Orders[order_date], "MMM" )
+
+Orders[Year Month] =
+FORMAT ( Orders[order_date], "YYYY-MM" )
+*/
